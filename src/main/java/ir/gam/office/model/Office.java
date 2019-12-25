@@ -34,16 +34,25 @@ public class Office implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "provider",updatable = true)
+    @Column(name = "provider", updatable = true)
     private ProviderName providerName;
 
-    @Column(name = "inActive",updatable = true)
+    @Column(name = "inActive", updatable = true)
     private boolean inActive;
 
     public Office() {
     }
 
-    public Office(String name, String code,ProviderName providerName, boolean inActive) {
+
+    public Office(String name, String code, ProviderName providerName, boolean inActive) {
+        this.code = code;
+        this.name = name;
+        this.providerName = providerName;
+        this.inActive = inActive;
+    }
+
+    public Office(Long id, String name, String code, ProviderName providerName, boolean inActive) {
+        this.id = id;
         this.code = code;
         this.name = name;
         this.providerName = providerName;

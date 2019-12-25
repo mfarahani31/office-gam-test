@@ -26,7 +26,16 @@ class OfficeServiceTest {
 
 
     @Test
-    public void whenFindAll_thenReturnOfficeList() {
+    public void givenOffice_whenCreateOffice_thenSaveOffice() {
+        Office office = new Office("abcdefghijklmno", "123456789", ProviderName.hami_mymci, true);
+
+        officeService.registerOffice(office);
+
+        verify(officeRepository, times(1)).save(office);
+    }
+
+    @Test
+    public void whenFindAllOffices_thenReturnListOfOffices() {
         // given
         Office office = new Office("abcdefghijklmno", "123456789", ProviderName.hami_mymci, true);
         List<Office> expectedOffices = Arrays.asList(office);
@@ -41,7 +50,7 @@ class OfficeServiceTest {
     }
 
     @Test
-    void whenFindAllOffices_thenReturnOfficesListSize() {
+    void givenListOfOffices_whenFindAllOffices_thenReturnOfficesListSize() {
         //given
         List<Office> offices = new ArrayList<>();
         Office office1 = new Office("Iraniiiiiiiiiiiiiiiii", "12023874376667732462", ProviderName.hami_mymci, true);
@@ -61,6 +70,25 @@ class OfficeServiceTest {
         //then
         assertEquals(3, officeList.size());
         verify(officeRepository, times(1)).findAll();
+    }
 
+    @Test
+    public void givenIdLong_whenFindByID_thenReturnsOffice() {
+
+        //given
+        Office expectedOffice = new Office(1L, "abcdefghijklmno", "12345678900", ProviderName.huawei, true);
+
+        //when
+        doReturn(expectedOffice).when(officeRepository).getOne(1L);
+
+        //test
+        Office actualOffice = officeService.findById(1L);
+
+        //then
+        assertEquals(expectedOffice.getName(), actualOffice.getName());
+        assertEquals(expectedOffice.getCode(), actualOffice.getCode());
+        assertEquals(expectedOffice.getProviderName(), actualOffice.getProviderName());
+
+        verify(officeRepository, times(1)).getOne(anyLong());
     }
 }

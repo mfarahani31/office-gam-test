@@ -29,11 +29,10 @@ public class OfficeController {
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<Office> create(@RequestBody OfficeDto officeDto) {
+    public ResponseEntity<Office> registerOffice(@RequestBody OfficeDto officeDto) {
         Office office = officeService.registerOffice(officeMapper.INSTANCE.officeDtoToOffice(officeDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(office);
     }
-
 
     @RequestMapping(value = "/getOffices", method = RequestMethod.GET)
     public ResponseEntity<List<OfficeDto>> findAllOffices() {
@@ -46,7 +45,7 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public ResponseEntity<OfficeDto> update(@PathVariable Long id, @RequestBody OfficeDto officeDto) {
+    public ResponseEntity<OfficeDto> editOffice(@PathVariable Long id, @RequestBody OfficeDto officeDto) {
         Office office = officeMapper.INSTANCE.officeDtoToOffice(officeDto);
         office.setId(id);
         officeService.registerOffice(office);
@@ -54,7 +53,7 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity deleteOffice(@PathVariable Long id) {
         officeService.deleteById(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }

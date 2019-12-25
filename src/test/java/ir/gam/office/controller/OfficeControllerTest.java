@@ -52,8 +52,8 @@ class OfficeControllerTest {
 
         List<OfficeDto> officeDtos = Arrays.asList(officeDto);
 
-        doReturn(new ArrayList<>()).when(officeService).findAllOffices();
-        doReturn(officeDtos).when(officeMapper).officeToOfficeDto(any());
+        doReturn(new ArrayList<Office>()).when(officeService).findAllOffices();
+        doReturn(officeDtos).when(officeMapper.INSTANCE).officeToOfficeDto(any());
 
         // when + then
         this.mockMvc.perform(get("/office/getOffices"))
@@ -68,12 +68,12 @@ class OfficeControllerTest {
 
 
         doReturn(Optional.of(new Office())).when(officeService).findById(anyLong());
-        doReturn(officeDto).when(officeMapper).officeToOfficeDto(any(Office.class));
+        doReturn(officeDto).when(officeMapper.INSTANCE).officeToOfficeDto(any(Office.class));
 
         // when + then
         this.mockMvc.perform(get("/office/getOffices/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(officeDto.getName())));
+                .andExpect(jsonPath("@.name", is(officeDto.getName())));
     }
 
     @Test
