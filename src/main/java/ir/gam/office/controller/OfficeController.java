@@ -46,6 +46,7 @@ public class OfficeController {
 //        return OfficeMapper.INSTANCE.officesToOfficesDto(offices);
 //    }
 
+
     @RequestMapping(value = "/getOffices", method = RequestMethod.GET)
     public ResponseEntity<List<OfficeDto>> findAllOffices() {
         return ResponseEntity.ok(officeMapper.INSTANCE.officesToOfficesDto(officeService.findAllOffices()));
