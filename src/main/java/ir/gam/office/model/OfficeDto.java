@@ -1,13 +1,9 @@
 package ir.gam.office.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 
-public class OfficeDto  implements Serializable {
+public class OfficeDto implements Serializable {
 
 
     private Long Id;
@@ -18,6 +14,13 @@ public class OfficeDto  implements Serializable {
 
 
     public OfficeDto() {
+    }
+
+    public OfficeDto(String name, String code, String providerName, boolean inActive) {
+        this.name = name;
+        this.code = code;
+        this.providerName = providerName;
+        this.inActive = inActive;
     }
 
     public Long getId() {
