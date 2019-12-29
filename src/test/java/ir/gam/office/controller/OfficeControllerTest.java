@@ -24,9 +24,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+//@ExtendWith(SpringExtension.class)
 @SpringBootTest
-@WebMvcTest
+@WebMvcTest(OfficeController.class)
 class OfficeControllerTest {
 
     @Autowired
@@ -48,7 +48,7 @@ class OfficeControllerTest {
     @Test
     public void whenFindAll_thenReturnProductDTOList() throws Exception {
         // given
-        OfficeDto officeDto = new OfficeDto("abcdefghijklmno", "123456789", "hami-mymci", true);
+        OfficeDto officeDto = new OfficeDto("abcdefghijklmno", "1234567890123", "hami-mymci", true);
 
         List<OfficeDto> officeDtos = Arrays.asList(officeDto);
 
@@ -62,9 +62,9 @@ class OfficeControllerTest {
     }
 
     @Test
-    public void whenFindById_thenReturnProductDTO() throws Exception {
+    public void whenGetOfficeById_thenReturnProductDTO() throws Exception {
         // given
-        OfficeDto officeDto = new OfficeDto("abcdefghijklmno", "123456789", "hami-mymci", true);
+        OfficeDto officeDto = new OfficeDto(1L, "abcdefghijklmno", "1234567890123", "hami-mymci", true);
 
 
         doReturn(Optional.of(new Office())).when(officeService).findById(anyLong());
@@ -89,23 +89,12 @@ class OfficeControllerTest {
     void testEditOffice() {
     }
 
-    @Test
-    void getOffices() {
-//        // given
-//        Office office1 = new Office("asdnajdnasndjnadasdjan", "478327434247273247", "huawei", false);
-//        Office office2 = new Office("sadslknlnfnjsdcsclkasjdas", "89574575557346755", "aban-eshop", true);
-//        List<Office> offices = new ArrayList<>();
-//        when(officeRepository.findAll()).thenReturn(offices);
-//
-//        // when
-//        List<Office> result = officeController.getOffices();
-//
-//        // then
-//        assertEquals(10,result.size());
-//
-//        assertEquals(office1.getName(),result.get(0).getName());
-//
-//        assertEquals(office2.getName(),result.get(1).getName());
-
-    }
+//    void whenValidInput_thenReturns200() throws Exception {
+////        Office officeDto = new Office("abcdefghijklmno", "123456789", "hami-mymci", true);
+////
+////        mockMvc.perform(post("/forums/{forumId}/register", 42L)
+////                .contentType("application/json")
+////                .param("sendWelcomeMail", "true")
+////                .content(officeMapper.writeValueAsString(user)))
+////                .andExpect(status().isOk());    }
 }

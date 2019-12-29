@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class OfficeDto implements Serializable {
 
 
-    private Long Id;
+    private Long id;
     private String name;
     private String code;
     private String providerName;
@@ -23,12 +23,21 @@ public class OfficeDto implements Serializable {
         this.inActive = inActive;
     }
 
+    public OfficeDto(Long id, String name, String code, String providerName, boolean inActive) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.providerName = providerName;
+        this.inActive = inActive;
+    }
+
+
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {

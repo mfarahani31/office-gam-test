@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -24,18 +25,52 @@ class OfficeServiceTest {
     @MockBean
     OfficeRepository officeRepository;
 
-
     @Test
-    public void givenOffice_whenCreateOffice_thenSaveOffice() {
-        Office office = new Office("abcdefghijklmno", "123456789", ProviderName.hami_mymci, true);
-
-        officeService.registerOffice(office);
-
-        verify(officeRepository, times(1)).save(office);
+    void testContext() {
+        assertNotNull(officeRepository);
+        assertNotNull(officeService);
     }
 
     @Test
-    public void whenFindAllOffices_thenReturnListOfOffices() {
+    public void givenOffice_whenCreateOfficeCalled_thenReturnNewOffice() {
+        Office office = new Office();
+
+        doReturn(new Office()).when(officeRepository).save(any(Office.class));
+
+        assertNotNull(officeService.registerOffice(office));
+    }
+
+
+    @Test
+    void givenIdLong_whenDeleteByIDCalled_thenDeleteOffice() {
+
+        Office office = new Office(1L, "abcdefghijklmno", "123456789", ProviderName.hami_mymci, true);
+
+        doNothing().when(officeRepository).deleteById(anyLong());
+
+        officeService.deleteById(office.getId());
+
+        verify(officeRepository, times(1)).deleteById(office.getId());
+
+
+//        doThrow(new Exception("Database connection issue"))
+//                .when(officeRepository).deleteById(anyLong());
+//        officeService.deleteById(office.getId());
+    }
+
+//    @Test
+//    void whenRegisterOfficeWithoutName_thenReturnNullPointerException() {
+//        Office office = new Office();
+//        office.setCode("1234567890123");
+//        office.setProviderName(ProviderName.huawei);
+//        office.setInActive(true);
+//
+//        officeService.registerOffice(office);
+//        //assertThrows(NullPointerException.class);
+//    }
+
+    @Test
+    public void whenFindAllOfficesCalled_thenReturnsListOfOffices() {
         // given
         Office office = new Office("abcdefghijklmno", "123456789", ProviderName.hami_mymci, true);
         List<Office> expectedOffices = Arrays.asList(office);
@@ -76,13 +111,13 @@ class OfficeServiceTest {
     public void givenIdLong_whenFindByID_thenReturnsOffice() {
 
         //given
-        Office expectedOffice = new Office(1L, "abcdefghijklmno", "12345678900", ProviderName.huawei, true);
+        Office expectedOffice = new Office(1L, "abcdefghijklmno", "123456789000", ProviderName.huawei, true);
 
         //when
-        doReturn(expectedOffice).when(officeRepository).getOne(1L);
+        doReturn(expectedOffice).when(officeRepository).getOne(anyLong());
 
         //test
-        Office actualOffice = officeService.findById(1L);
+        Office actualOffice = officeService.findById(anyLong());
 
         //then
         assertEquals(expectedOffice.getName(), actualOffice.getName());

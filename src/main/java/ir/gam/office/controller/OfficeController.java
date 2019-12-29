@@ -1,5 +1,6 @@
 package ir.gam.office.controller;
 
+import ir.gam.office.exception.RecordNotFoundException;
 import ir.gam.office.model.Office;
 import ir.gam.office.model.OfficeDto;
 import ir.gam.office.model.OfficeMapper;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/office")
+@RequestMapping(OfficeController.OFFICE_URL)
 public class OfficeController {
+    public static final String OFFICE_URL = "/office";
 
     private OfficeService officeService;
     private OfficeMapper officeMapper;
@@ -41,7 +43,11 @@ public class OfficeController {
 
     @RequestMapping(value = "/getOffices/{id}", method = RequestMethod.GET)
     public ResponseEntity<OfficeDto> getOfficeById(@PathVariable Long id) {
-        return ResponseEntity.ok(officeMapper.INSTANCE.officeToOfficeDto(officeService.findById(id)));
+        OfficeDto officeDto = officeMapper.INSTANCE.officeToOfficeDto(officeService.findById(id));
+        if (officeDto == null) {
+            throw new RecordNotFoundException("Invalid office id : " + id);
+        }
+        return new ResponseEntity<>(officeDto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
@@ -57,6 +63,4 @@ public class OfficeController {
         officeService.deleteById(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-
-
 }
