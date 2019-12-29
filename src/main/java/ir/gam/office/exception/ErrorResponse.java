@@ -1,6 +1,5 @@
 package ir.gam.office.exception;
 
-import java.util.List;
 
 public class ErrorResponse {
 
@@ -8,9 +7,10 @@ public class ErrorResponse {
     private String message;
 
     //Specific errors in API request processing
-    private List<String> details;
+    private String details;
 
-    public ErrorResponse(String message, List<String> details) {
+
+    public ErrorResponse(String message, String details) {
         super();
         this.message = message;
         this.details = details;
@@ -26,11 +26,11 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public List<String> getDetails() {
+    public String getDetails() {
         return details;
     }
 
-    public void setDetails(List<String> details) {
+    public void setDetails(String details) {
         this.details = details;
     }
 }
