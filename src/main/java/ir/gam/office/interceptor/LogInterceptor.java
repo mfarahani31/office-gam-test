@@ -19,18 +19,25 @@ public class LogInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         Logger.info("\n\n\n----------------LogInterceptor PreHandle (Start)--------------------------");
-        Logger.info(request.getRemoteAddr()
-                + " accessed resource " + request.getRequestURI() + " @ " + getCurrentTime());
+
+        Logger.info("IP         : {}", request.getRemoteAddr());
+        Logger.info("URI         : {}", request.getRequestURI());
+        Logger.info("Method      : {}", request.getMethod());
+        Logger.info("Headers     : {}", request.getHeaderNames());
+        Logger.info("Request Processing starts on : {}", getCurrentTime());
+
+
         long startTime = System.currentTimeMillis();
         request.setAttribute("startTime", startTime); //inject new attribute 'startTime' in request header
         Logger.info("----------------LogInterceptor PreHandle(End)--------------------------");
-        //responseHeader can be modified similiarly as per need
+        //responseHeader can be modified similarly as per need
 
+        // TODO : Example for redirect interceptor
         /*Take action base on incoming IP
         Suppose you want to redirect all ip to auth-failed which ip value starts with "192"
         */
         if (request.getRemoteAddr().startsWith("192")) {
-            response.sendRedirect("/auth-failed"); //redirect to default
+            response.sendRedirect("/error"); //redirect to default
             return false; //returning false ensure that the request is not further required to be intercepted,
             // response is directly send to the user hereafter.
         }
@@ -42,7 +49,11 @@ public class LogInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
         Logger.info("\n\n\n----------------LogInterceptor postHandle (Start)--------------------------");
-        Logger.info("Request Processing ends on " + getCurrentTime());
+
+        Logger.info("Status code  : {}", response.getStatus());
+        Logger.info("Headers      : {}", response.getHeaderNames());
+        Logger.info("Request Processing ends on  : {}", getCurrentTime());
+        //Logger.info("Response body: {}", StreamUtils.copyToString(response.toString(), Charset.defaultCharset()));
         Logger.info("----------------LogInterceptor postHandle (End)--------------------------");
     }
 
@@ -52,7 +63,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
         long endTime = System.currentTimeMillis();
         long startTime = Long.parseLong(request.getAttribute("startTime") + "");
-        Logger.info("Total time taken to process request (in milliseconds(ms)) " + (endTime - startTime) + " ms");
+        Logger.info("Total time taken to process request (in milliseconds(ms)) : {} ", (endTime - startTime) + " ms");
         Logger.info("----------------LogInterceptor after view is rendered (End)--------------------------");
     }
 

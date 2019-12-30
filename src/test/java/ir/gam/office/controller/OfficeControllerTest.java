@@ -42,7 +42,7 @@ class OfficeControllerTest {
 
 
     @Test
-    public void contextLoads() throws Exception {
+    public void contextLoads() {
         assertNotNull(officeMapper);
         assertNotNull(officeService);
     }
@@ -58,7 +58,7 @@ class OfficeControllerTest {
         doReturn(officeDtos).when(officeMapper).officesToOfficesDto(any());
 
         // when + then
-        this.mockMvc.perform(get("/office/getOffices"))
+        this.mockMvc.perform(get(OfficeController.OFFICE_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is(officeDto.getName())))
                 .andExpect(jsonPath("$[0].providerName", is(officeDto.getProviderName())))
@@ -67,7 +67,7 @@ class OfficeControllerTest {
     }
 
     @Test
-    public void whenGetOfficeById_thenReturnProductDTO() throws Exception {
+    public void whenGetOfficeById_thenReturnOfficeDTO() throws Exception {
         // given
         OfficeDto officeDto = new OfficeDto(1L, "abcdefghijklmno", "1234567890123", "hami-mymci", true);
 
@@ -76,7 +76,7 @@ class OfficeControllerTest {
         doReturn(officeDto).when(officeMapper).officeToOfficeDto(any(Office.class));
 
         // when + then
-        this.mockMvc.perform(get("/office/getOffices/" + anyLong()))
+        this.mockMvc.perform(get(OfficeController.OFFICE_URL + anyLong()))
                 .andExpect(status().isOk())
                 //.andExpect(jsonPath("$.id", is(officeDto.getId())))
                 .andExpect(jsonPath("$.code", is(officeDto.getCode())))
